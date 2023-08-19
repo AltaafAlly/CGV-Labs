@@ -1,0 +1,197 @@
+<html>
+
+<head>
+    <title>Page Title</title>
+    <script>
+        var canvas;
+        var circle, clockWidth;
+        function drawLine(x1, y1, x2, y2, colour) {
+            circle.beginPath();
+            circle.moveTo(x1, y1);
+            circle.lineTo(x2, y2);
+            circle.stroke();
+            circle.closePath();
+
+        }
+
+        // }
+        // function drawhorizontal (x1, y1, x2, y2) {
+        //     for (var i = 0; i < 600; i += 60) {
+        //         circle.beginPath();
+        //         circle.moveTo(x1, y1);
+        //         circle.lineTo(x2, y2);
+        //         circle.strokeStyle = "white";
+        //         circle.stroke();
+        //         y1 += 60;
+        //         y2 += 60;   
+        //     }
+
+        //}
+        function drawCircle(x, y, radius) {
+            circle.beginPath();
+            circle.arc(x, y, radius, 0, 2 * Math.PI);
+            //circle.strokeStyle = "white";
+            circle.stroke();
+            circle.closePath();
+
+        }
+        function drawTicForHours(x, y, clockWidth) {
+            // x and y are the center coordinates of the clock
+            // clockWidth is the diameter of the clock
+
+            var i = 12;
+            //circle.strokeStyle = "white";
+            circle.lineWidth = 2;
+
+            while (i > 0) {
+                circle.save();
+                circle.beginPath();
+                circle.translate(x, y);
+                var angle = (i * 30) * Math.PI / 180;
+                circle.rotate(angle);
+                circle.translate(0, -clockWidth / 2);
+
+                circle.save();
+                circle.translate(0, -20);
+                circle.rotate(-angle);
+                circle.font = "20px Arial";
+                circle.textAlign = "center";
+                circle.fillStyle = "white";
+                circle.fillText(i, 0, 0);
+                circle.restore();
+
+                circle.moveTo(0, 20);
+                circle.lineTo(0, 50);
+                circle.stroke();
+                circle.closePath();
+                circle.restore();
+                i--;
+            }
+        }
+        function Add24Numbers(x, y, clockWidth) {
+            var i = 12;
+            //circle.strokeStyle = "white";
+            circle.lineWidth = 2;
+
+            while (i < 24) {
+                circle.save();
+                circle.beginPath();
+                circle.translate(x, y);
+                var angle = (i * 30) * Math.PI / 180;
+                circle.rotate(angle);
+                circle.translate(0, -clockWidth / 2 + 100);
+
+                circle.translate(0, -20);
+                circle.rotate(-angle);
+                circle.font = "20px Arial";
+                circle.textAlign = "center";
+                circle.fillStyle = "red";
+                if (i === 12) {
+                    circle.fillText("00", 0, 0);
+                } else {
+                    circle.fillText(i.toString(), 0, 0);
+                }
+
+                circle.restore();
+                i++;
+            }
+
+        }
+
+        function drawTicForMinutes(x, y, clockWidth) {
+            var i = 60;
+            //circle.strokeStyle = "white";
+            circle.lineWidth = 2;
+            while (i > 0) {
+                circle.save();
+                circle.beginPath();
+                circle.translate(x, y);
+                var angle = (i * 6) * Math.PI / 180;
+                circle.rotate(angle);
+                circle.translate(0, -clockWidth / 2);
+
+                circle.moveTo(0, 0);
+                circle.lineTo(0, 10);
+                circle.stroke();
+                circle.closePath();
+                circle.restore();
+                i--;
+            }
+        }
+        function drawHands(centreX, centreY, date) {
+            var theta = TimeToAngle(date);
+            var hour = theta[0];
+            var minute = theta[1];
+            var second = theta[2];
+            drawLine(centreX, centreY, centreX + Math.sin(hour) * 120, centreY - Math.cos(hour) * 120, "white");
+            drawLine(centreX, centreY, centreX + Math.sin(minute) * 180, centreY - Math.cos(minute) * 180, "white");
+            circle.strokeStyle = "red";
+            drawLine(centreX, centreY, centreX + Math.sin(second) * 190, centreY - Math.cos(second) * 180), "red";
+            circle.strokeStyle = "white";
+
+        }
+        function TimeToAngle(date) {
+            var h = date.getHours();
+            var m = date.getMinutes();
+            var s = date.getSeconds();
+            var ms = date.getMilliseconds();
+            var hour = (h % 12 + m / 60) * (2 * Math.PI / 12);
+            var minute = (m + s / 60) * (2 * Math.PI / 60);
+            var second = (s + ms / 1000) * (2 * Math.PI / 60);
+            return [hour, minute, second];
+        }
+        function drawCenterCap(x, y, radius) {
+            circle.beginPath();
+            circle.arc(x, y, radius / 20, 0, 2 * Math.PI);
+            circle.fillStyle = "white";
+            circle.fill();
+            circle.closePath();
+        }
+
+        function init() {
+
+            let d = new Date();
+            document.getElementById("date").innerHTML = d;
+            canvas = document.getElementById("myCanvas");
+            circle = canvas.getContext("2d");
+
+
+
+            circle.clearRect(0, 0, canvas.width, canvas.height);
+            circle.strokeStyle = "white";
+            var gradient = circle.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, "black");
+            gradient.addColorStop(1, "#333333");
+            circle.fillStyle = gradient;
+            circle.fillRect(0, 0, canvas.width, canvas.height);
+
+            drawCircle(300, 300, 240);
+            drawCircle(300, 300, 120);
+            drawTicForMinutes(300, 300, 480);
+            drawTicForHours(300, 300, 480);
+            Add24Numbers(300, 300, 480);
+            drawHands(300, 300, d);
+            drawCenterCap(300, 300, 240);
+        }
+        setInterval(init, 10);
+    </script>
+</head>
+<style>
+    #myCanvas {
+        width: 600px;
+        height: 600px;
+        background-color: rgb(0, 0, 0);
+        border: 1px solid rgb(0, 0, 0);
+    }
+</style>
+
+<body onload="init()">
+    <h1>My Clock</h1>
+    <p id="date">
+    </p>
+    <canvas id="myCanvas" width="600" height="600">
+        .
+    </canvas>
+</body>
+
+</html>
