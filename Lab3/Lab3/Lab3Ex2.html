@@ -14,7 +14,7 @@
     var Y_BOTTOM = -3;
     var Y_TOP = 3;
     
-    var BACKGROUND = "#87ceeb";  // The display is filled with this color before the scene is drawn.
+    var BACKGROUND = "#ffff";  // The display is filled with this color before the scene is drawn.
          
     var pixelSize;  // The size of one pixel, in the transformed coordinates.
             
@@ -23,63 +23,23 @@
     var world;  // A SceneGraphNode representing the entire scene. 
     
     // TODO: Define global variables to represent animated objects in the scene.
-    var rotatingRect;  // (DELETE THIS EXAMPLE)
-    var sun;
-    var car;
+    // var rotatingRect;  // (DELETE THIS EXAMPLE)
+    // var sun;
+    // var car;
     var wheel;
-    var windmill;
-    var rotor;
+    var rectangle;
+    var diagram1;
+    // var windmill;
+    // var rotor;
     /**
      *  Builds the data structure that represents the entire picture.
      */
     function createWorld() {
 
         world = new CompoundObject();  // Root node for the scene graph.
-
-        //draws sun
-        var sunTemp = new CompoundObject();
-        sunTemp.setColor("yellow"); // color for filled circle
-        for (var i = 0; i < 12; i++) {  // add the 12 light rays, with different rotations, colored red
-           sunTemp.add( new TransformedObject(line).setScale(1.2,1.2).setRotation(i*30).setColor("red") );
-        }
-        sunTemp.add( filledCircle );  // the face of the sun
-        sunTemp.add( new TransformedObject(circle).setColor("red") ); // outlines the face
-        sun = new TransformedObject(sunTemp);
-        world.add(new TransformedObject(sun).setTranslation(3,2.3));
-
-
-        //draws the grass
-        world.add(new TransformedObject(filledRect).setColor('green').setScale(20,4).setTranslation(-6,-2));
-
-        //draws the mountains
-        world.add(new TransformedObject(filledTriangle).setColor('green').setScale(6,2).setTranslation(-3,-1));
-        world.add(new TransformedObject(filledTriangle).setColor('green').setScale(6,2.5).setTranslation(-1,-1));
-        world.add(new TransformedObject(filledTriangle).setColor('green').setScale(7,2).setTranslation(2,-1));
-        world.add(new TransformedObject(filledTriangle).setColor('green').setScale(6,2.5).setTranslation(4,-1));
-
-
-        //draws the base of the first windmill
-        var rotorTemp = new CompoundObject(); // a "rotor" consisting of three vanes
-        rotorTemp.setColor( "#C86464" ); // color for all of the vanes
-        rotorTemp.add( windmillVane );
-        rotorTemp.add( new TransformedObject(windmillVane).setRotation(120) );
-        rotorTemp.add( new TransformedObject(windmillVane).setRotation(240) );
-        rotor = new TransformedObject(rotorTemp);
-
-
-        var windmill = new CompoundObject();
-        windmill.setColor("#AA9999"); // color for the pole
-        windmill.add( new TransformedObject(filledRect).setScale(0.1,3).setTranslation(0,1.5) ); // the pole
-        windmill.add( new TransformedObject(rotor).setTranslation(0,3) ); // the rotating vanes
-
-        //draws the blades
-        world.add( new TransformedObject(windmill).setScale(0.6,0.6).setTranslation(1,0) );
-        world.add( new TransformedObject(windmill).setScale(0.4,0.4).setTranslation(-0.9,0.9) );
-        world.add( new TransformedObject(windmill).setScale(0.7,0.7).setTranslation(-3,0) );
-
-        //draws wheels
-        var wheelTemp = new CompoundObject();
+        
         //draws outer circle
+        var wheelTemp = new CompoundObject();
         wheelTemp.add(filledCircle);
         wheelTemp.add(new TransformedObject(filledCircle).setColor("white").setScale(0.9,0.9));
         wheelTemp.add(new TransformedObject(filledCircle).setColor("black").setScale(0.1,0.1));
@@ -89,26 +49,31 @@
         }
         wheel = new TransformedObject(wheelTemp);
 
-        //draws car
-        var carTemp = new CompoundObject();
-        //adds wheels to car
-        carTemp.add(new TransformedObject(wheel).setTranslation(-3,-1.5));
-        carTemp.add(new TransformedObject(wheel).setTranslation(-1,-1.5));
-        //draws the body for the car
-        carTemp.add(new TransformedObject(filledRect).setColor('blue').setScale(3.5,0.9).setTranslation(-2,-0.9));
-        carTemp.add(new TransformedObject(filledRect).setColor('blue').setScale(1.5,1.5).setTranslation(-2,-0.5));
-        carTemp.add(new TransformedObject(filledTriangle).setColor('blue').setScale(1,0.75).setTranslation(-1.25,-0.5));
-        carTemp.add(new TransformedObject(filledTriangle).setColor('blue').setScale(1,0.75).setTranslation(-2.75,-0.5));
-        car = new TransformedObject(carTemp);
+        //draws the filled rectangle
+        var Temprectangle = new CompoundObject();
+        Temprectangle.add(new TransformedObject(wheel).setTranslation(1,0));
+        Temprectangle.add(new TransformedObject(wheel).setTranslation(-1,0));
+        Temprectangle.add(new TransformedObject(filledRect).setTranslation(0,0).setScale(2,0.2).setColor("red"));
+        rectangle = new TransformedObject(Temprectangle);
         
+        
+        //draws the diagram 1
+        diagram1 = new CompoundObject();        
+        diagram1.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
+        diagram1.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5).setColor("purple"));
+        world.add(new TransformedObject(diagram1).setTranslation(0,-1));
+        
+        //draw the diagram 2
+        diagram2 = new CompoundObject();
+        diagram2.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
+        diagram2.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5).setColor("yellow"));
+        world.add(new TransformedObject(diagram2).setTranslation(-2,2));
 
-        //create road
-        world.add(new TransformedObject(filledRect).setColor('grey').setScale(20,1).setTranslation(-6,-2));
-        //draws road lines
-        world.add(new TransformedObject(filledRect).setColor('white').setScale(20,0.1).setTranslation(-6,-2));
-
-        //draws car
-        world.add(new TransformedObject(car).setTranslation(-1,-0.8).setScale(0.5,0.5));
+        //draw the diagram 3
+        diagram3 = new CompoundObject();
+        diagram3.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
+        diagram3.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5).setColor("blue"));
+        world.add(new TransformedObject(diagram3).setTranslation(2,2));
     }
     
     /**
@@ -119,11 +84,9 @@
         frameNumber++;
 
         // TODO: Update state in preparation for drawing the next frame.
-        //rotatingRect.setRotation(frameNumber*0.75); // (DELETE THIS EXAMPLE)
-        sun.setRotation(frameNumber*0.50);
-        car.setTranslation(-7 + 13*(frameNumber % 600) / 300.0, 0);
-        wheel.setRotation(-frameNumber*3.1);
-        rotor.setRotation(frameNumber * 0.75);
+
+        wheel.setRotation(frameNumber*0.75);
+        rectangle.setRotation(frameNumber*0.75);
         
     }
  
@@ -395,7 +358,7 @@
 
 </head>
 
-<body onload="init()" style="background-color:#EEEEEE">
+<body onload="init()" style="background-color:#ffffff">
 
 <h3>Scene Graph 2D</h3>
 
