@@ -14,7 +14,7 @@
     var Y_BOTTOM = -3;
     var Y_TOP = 3;
     
-    var BACKGROUND = "#ffff";  // The display is filled with this color before the scene is drawn.
+    var BACKGROUND = "#87CEEB";  // The display is filled with this color before the scene is drawn.
          
     var pixelSize;  // The size of one pixel, in the transformed coordinates.
             
@@ -29,6 +29,9 @@
     var car4;
     var wheel;
     var sun;
+    var FinishLine;
+    var person;
+    var fence;
     /**
      *  Builds the data structure that represents the entire picture.
      */
@@ -46,6 +49,72 @@
         sun = new TransformedObject(sunTemp);
         world.add(new TransformedObject(sun).setTranslation(3,2.3));
         
+        //draws clouds
+        clouds= new CompoundObject();
+        cloud = new TransformedObject(filledCircle);
+        cloud.setColor("white").setScale(1,0.5).setTranslation(-3,2);//creating left half of cloud
+
+        TempCloud = new TransformedObject(filledCircle);
+        TempCloud.setColor("white").setScale(1,0.5).setTranslation(-2.5,2);//creating right part of the cloud
+        clouds.add(cloud);
+        clouds.add(TempCloud)
+        
+        
+
+        //draws the mountains
+        world.add(new TransformedObject(filledTriangle).setColor('green').setScale(6,2).setTranslation(-3,0.5));
+        world.add(new TransformedObject(filledTriangle).setColor('green').setScale(6,2.5).setTranslation(-1,-0.5));
+        world.add(new TransformedObject(filledTriangle).setColor('green').setScale(7,2).setTranslation(2,-0.5));
+        world.add(new TransformedObject(filledTriangle).setColor('green').setScale(6,2.5).setTranslation(4,-1));
+        //draws the grass
+        world.add(new TransformedObject(filledRect).setColor('green').setScale(20,5).setTranslation(-6,-2));
+        //creating 4 clouds
+        cloud = new TransformedObject(clouds);
+        //world.add(cloud);
+        
+
+        cloud1 = new TransformedObject(cloud);
+        world.add(cloud1.setTranslation(-1,0.5));
+
+        cloud2 = new TransformedObject(cloud);
+        world.add(cloud2.setTranslation(2,0.1));
+
+        cloud3 = new TransformedObject(cloud);
+        world.add(cloud3.setTranslation(4,-0.2));
+
+        cloud4 = new TransformedObject(cloud);
+        world.add(cloud4.setTranslation(5,1));
+        //draw people
+        var personTemp = new CompoundObject();
+
+        //draw head
+        var Temphead = new CompoundObject();
+        Temphead.add(new TransformedObject(filledCircle).setColor("black"));
+        Temphead.add(new TransformedObject(filledCircle).setColor("white").setScale(0.97,0.97));
+        //draw eyes added to head
+        Temphead.add(new TransformedObject(filledCircle).setColor("black").setScale(0.09,0.09).setTranslation(0.2,0.2));
+        Temphead.add(new TransformedObject(filledCircle).setColor("black").setScale(0.09,0.09).setTranslation(-0.2,0.2));
+        //draw mouth
+        Temphead.add(new TransformedObject(filledCircle).setColor("black").setScale(0.2,0.2).setTranslation(0,-0.2));
+        head = new TransformedObject(Temphead);
+        head.setScale(0.8,0.8);
+        personTemp.add(head);
+        
+        
+        //draw body
+        personTemp.add(new TransformedObject(filledRect).setColor("black").setScale(0.02,1.2).setTranslation(0,-1));
+        //draws legs
+        personTemp.add(new TransformedObject(filledRect).setColor("black").setScale(0.02,0.5).setTranslation(0.12,-1.8).setRotation(30));
+        personTemp.add(new TransformedObject(filledRect).setColor("black").setScale(0.02,0.5).setTranslation(-0.12,-1.8).setRotation(150));
+
+        //draws arms
+        personTemp.add(new TransformedObject(filledRect).setColor("black").setScale(0.02,0.5).setTranslation(0.19,-0.7).setRotation(310));
+        personTemp.add(new TransformedObject(filledRect).setColor("black").setScale(0.02,0.5).setTranslation(-0.19,-0.7).setRotation(230));
+
+        person = new TransformedObject(personTemp);
+
+        world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(-1,1));
+
 
         //draws wheels
         var wheelTemp = new CompoundObject();
@@ -80,18 +149,50 @@
         car3.setScale(0.5,0.5);
         car4.setScale(0.5,0.5);
 
+        //draw finish line
+        var TempFinishLine = new CompoundObject();
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.9,2).setColor("white"));//full black rectangle
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(-0.3,0.9));
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(0.3,0.9));
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.29,0.2).setColor("black").setTranslation(0,0.7));
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(0.3,0.5));
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(-0.3,0.5));
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(0,0.3));
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(0.3,0.1));
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(-0.3,0.1));
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(0,-0.1));
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(0.3,-0.3));
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(-0.3,-0.3));
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(0,-0.5));
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(0.3,-0.7));
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(-0.3,-0.7));
+
+        TempFinishLine.add(new TransformedObject(filledRect).setScale(0.3,0.2).setColor("black").setTranslation(0,-0.9));
+
+        FinishLine = new TransformedObject(TempFinishLine);
+
         //create road
         world.add(new TransformedObject(filledRect).setColor('grey').setScale(20,2).setTranslation(-6,-1.8));
-
+        
         //draws road lines
         for( var i = -4 ; i < 20; i+=2){
             world.add(new TransformedObject(filledRect).setColor('white').setScale(-1,0.1).setTranslation(i,-1.8));
         }
-        
+        //draws finish line
+        world.add(new TransformedObject(FinishLine).setTranslation(3.6,-1.8));
         //draws cars
         world.add(new TransformedObject(car1).setTranslation(-0.7,-1.5).setColor("blue"));
         world.add(new TransformedObject(car2).setTranslation(-2,-0.4).setColor("red"));
-        world.add(new TransformedObject(car3).setTranslation(1.5,-0.3).setColor("green"));
+        world.add(new TransformedObject(car3).setTranslation(1.5,-0.3).setColor("purple"));
         world.add(new TransformedObject(car4).setTranslation(3,-1.6).setColor("yellow"));
     }
     
@@ -106,13 +207,16 @@
 
         wheel.setRotation(frameNumber*0.75);
         sun.setRotation(frameNumber*0.50);
-        
+
         //adjust the speed of each car
         car1.setTranslation(-7 + 13*((frameNumber*1.7) % 600) / 300.0, 0);
         car2.setTranslation(-7 + 13*((frameNumber*1.3) % 600) / 300.0, 0);
         car3.setTranslation(-7 + 13*((frameNumber*1) % 600) / 300.0, 0);
         car4.setTranslation(-7 + 13*((frameNumber*1.5) % 600) / 300.0, 0);
-        
+        //make person jump up and down
+        person.setTranslation(0,0.5*Math.sin(frameNumber*0.03));
+        //make clouds move
+        cloud.setTranslation(-7 + 13*((frameNumber*0.4) % 600) / 600.0, 0);
     }
  
 
@@ -385,7 +489,7 @@
 
 <body onload="init()" style="background-color:#ffffff">
 
-<h3>Scene Graph 2D</h3>
+<h3>Lab3 Exercise 3.3</h3>
 
 <noscript>
    <p><b style="color:red">Error: This page requires JavaScript, but it is not available.</b></p>
