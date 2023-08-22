@@ -31,7 +31,8 @@
     var sun;
     var FinishLine;
     var person;
-    var fence;
+    var fence1;
+    var fence2;
     /**
      *  Builds the data structure that represents the entire picture.
      */
@@ -84,6 +85,7 @@
 
         cloud4 = new TransformedObject(cloud);
         world.add(cloud4.setTranslation(5,1));
+        
         //draw people
         var personTemp = new CompoundObject();
 
@@ -110,11 +112,25 @@
         //draws arms
         personTemp.add(new TransformedObject(filledRect).setColor("black").setScale(0.02,0.5).setTranslation(0.19,-0.7).setRotation(310));
         personTemp.add(new TransformedObject(filledRect).setColor("black").setScale(0.02,0.5).setTranslation(-0.19,-0.7).setRotation(230));
-
         person = new TransformedObject(personTemp);
 
-        world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(-1,1));
-
+        //add more people
+        world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(0,0.6));
+        world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(1,0.6));
+        world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(2,0.6));
+        world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(-1,0.6));
+        world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(-2,0.6));
+        //draw fence
+        var fenceTemp = new CompoundObject();
+        fenceTemp.add(new TransformedObject(filledRect).setColor("black").setScale(20,0.2));
+        for(var i = -3.5 ; i < 4 ; i++){
+            fenceTemp.add(new TransformedObject(filledRect).setColor("#5C4033").setScale(0.1,0.6).setTranslation(i,-0.4));
+        }
+        fence1 = new TransformedObject(fenceTemp);
+        fence2 = new TransformedObject(fenceTemp);
+        //first fence
+        world.add(new TransformedObject(fence1).setTranslation(0,-0.1));
+        
 
         //draws wheels
         var wheelTemp = new CompoundObject();
@@ -189,11 +205,15 @@
         }
         //draws finish line
         world.add(new TransformedObject(FinishLine).setTranslation(3.6,-1.8));
+        
         //draws cars
         world.add(new TransformedObject(car1).setTranslation(-0.7,-1.5).setColor("blue"));
         world.add(new TransformedObject(car2).setTranslation(-2,-0.4).setColor("red"));
         world.add(new TransformedObject(car3).setTranslation(1.5,-0.3).setColor("purple"));
         world.add(new TransformedObject(car4).setTranslation(3,-1.6).setColor("yellow"));
+        
+        //draw fence
+        world.add(new TransformedObject(fence2).setTranslation(0,-2.1));
     }
     
     /**
