@@ -31,7 +31,6 @@
     var sun;
     var FinishLine;
     var person;
-    var superman;
     var fence1;
     var fence2;
     /**
@@ -114,17 +113,12 @@
         personTemp.add(new TransformedObject(filledRect).setColor("black").setScale(0.02,0.5).setTranslation(0.19,-0.7).setRotation(310));
         personTemp.add(new TransformedObject(filledRect).setColor("black").setScale(0.02,0.5).setTranslation(-0.19,-0.7).setRotation(230));
         person = new TransformedObject(personTemp);
-
-        superman = new TransformedObject(personTemp);
-        superman.setRotation(90);
-        //superman.add(new TransformedObject(filledRect));
         //add more people
         world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(0,0.6));
         world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(1,0.6));
         world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(2,0.6));
         world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(-1,0.6));
         world.add(new TransformedObject(person).setScale(0.5,0.5).setTranslation(-2,0.6));
-        world.add(new TransformedObject(superman).setScale(0.5,0.5).setTranslation(4,2.5));
         //draw fence
         var fenceTemp = new CompoundObject();
         fenceTemp.add(new TransformedObject(filledRect).setColor("black").setScale(20,0.2));
@@ -242,11 +236,7 @@
         person.setTranslation(0,0.5*Math.sin(frameNumber*0.03));
         //make clouds move
         cloud.setTranslation(-7 + 13*((frameNumber*0.4) % 600) / 600.0, 0);
-        // world.add(new TransformedObject(superman).setScale(0.5,0.5).setTranslation(4,2.5));
-        // world.add(new TransformedObject(superman).setScale(0.5,0.5).setTranslation(4,2.5));
-        superman.setTranslation(4,2.5);
-        superman.setTranslation(-7 + 13*((-frameNumber*4) % 600) / 300.0, 0);
-    }
+        }
  
 
     //------------------- A Simple Scene Object-Oriented Scene Graph API ----------------
