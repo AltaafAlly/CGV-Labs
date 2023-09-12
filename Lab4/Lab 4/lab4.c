@@ -164,20 +164,22 @@ void draw() {
     // TODO: Draw the currently selected object, number 1, 2, 3, 4, or 5.
     // (Objects should lie in the cube with x, y, and z coordinates in the
     // range -5 to 5.)
-
-    drawShape1();
+    if(objectNumber == 1){
+        drawShape1();
+    }
+    
     //Example Triangle dont forget to comment out
-    glScalef(2.0,2.0,2.0);
-    glBegin(GL_TRIANGLES);
-    glColor3f(1.0f, 0.0f, 0.0f);   // Red
-    glVertex2f(0.0f, 1.0f);
+    // glScalef(2.0,2.0,2.0);
+    // glBegin(GL_TRIANGLES);
+    // glColor3f(1.0f, 0.0f, 0.0f);   // Red
+    // glVertex2f(0.0f, 1.0f);
 
-    glColor3f(0.0f, 1.0f, 0.0f);   // Green
-    glVertex2f(-1.0f, -1.0f);
+    // glColor3f(0.0f, 1.0f, 0.0f);   // Green
+    // glVertex2f(-1.0f, -1.0f);
 
-    glColor3f(0.0f, 0.0f, 1.0f);   // Blue
-    glVertex2f(1.0f, -1.0f);
-    glEnd();
+    // glColor3f(0.0f, 0.0f, 1.0f);   // Blue
+    // glVertex2f(1.0f, -1.0f);
+    // glEnd();
     
 }
 
