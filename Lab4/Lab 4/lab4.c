@@ -130,6 +130,31 @@ int rotateZ = 0;    //    Home key sets all rotations to 0.)
 /*
  * The function that draws the current object, with its modeling transformation.
  */
+
+void drawShape1(){
+    glScalef(1.0,1.0,1.0);
+    glBegin(GL_LINE_LOOP);
+
+    glColor3f(1.0f, 0.0f, 0.0f);   // Red
+    glVertex2f(5.0f, 5.0f);
+
+    glColor3f(0.0f, 1.0f, 0.0f);   // Green
+    glVertex2f(3.0f, 0.0f);
+
+    glColor3f(0.0f, 0.0f, 1.0f);   // Blue
+    glVertex2f(5.0f, -5.0f);
+
+    glColor3f(1.0f, 0.0f, 1.0f);   // Blue
+    glVertex2f(-5.0f, -5.0f);
+
+    glColor3f(0.0f, 1.0f, 1.0f);   // Blue
+    glVertex2f(-3.0f, 0.0f);
+
+    glColor3f(1.0f, 1.0f, 0.0f);   // Blue
+    glVertex2f(-5.0f, 5.0f);
+
+    glEnd();
+}
 void draw() {
     
     glRotatef(rotateZ,0,0,1);   // Apply rotations to complete object.
@@ -140,6 +165,7 @@ void draw() {
     // (Objects should lie in the cube with x, y, and z coordinates in the
     // range -5 to 5.)
 
+    drawShape1();
     //Example Triangle dont forget to comment out
     glScalef(2.0,2.0,2.0);
     glBegin(GL_TRIANGLES);
