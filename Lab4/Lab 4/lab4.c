@@ -133,28 +133,49 @@ int rotateZ = 0;    //    Home key sets all rotations to 0.)
 
 void drawShape1(){
     glScalef(1.0,1.0,1.0);
-    glBegin(GL_LINE_LOOP);
+    glBegin(GL_QUAD_STRIP);
 
-    glColor3f(1.0f, 0.0f, 0.0f);   // Red
+    glColor3f(1.0f, 1.0f, 0.0f);   
+    glVertex2f(-5.0f, 5.0f);
+
+    glColor3f(1.0f, 0.0f, 0.0f);   
     glVertex2f(5.0f, 5.0f);
 
-    glColor3f(0.0f, 1.0f, 0.0f);   // Green
-    glVertex2f(3.0f, 0.0f);
-
-    glColor3f(0.0f, 0.0f, 1.0f);   // Blue
-    glVertex2f(5.0f, -5.0f);
-
-    glColor3f(1.0f, 0.0f, 1.0f);   // Blue
-    glVertex2f(-5.0f, -5.0f);
-
-    glColor3f(0.0f, 1.0f, 1.0f);   // Blue
+    glColor3f(0.0f, 1.0f, 1.0f);   
     glVertex2f(-3.0f, 0.0f);
 
-    glColor3f(1.0f, 1.0f, 0.0f);   // Blue
-    glVertex2f(-5.0f, 5.0f);
+    glColor3f(0.0f, 1.0f, 0.0f);   
+    glVertex2f(3.0f, 0.0f);
+    
+    glColor3f(1.0f, 0.0f, 1.0f);   
+    glVertex2f(-5.0f, -5.0f);
+
+    glColor3f(0.0f, 0.0f, 1.0f);   
+    glVertex2f(5.0f, -5.0f);
 
     glEnd();
 }
+void drawStellatedDodecahedron() {
+    glBegin(GL_TRIANGLES);
+    glDisable(GL_LIGHTING);  // or gl2.glDisable(GL2.GL_LIGHTING) in Java
+    for (int i = 0; i < sizeof(dodecTriangles) / sizeof(dodecTriangles[0]); i++) {
+        for (int j = 0; j < 3; j++) {
+            int vertexIndex = dodecTriangles[i][j];
+            double x = dodecVertices[vertexIndex][0];
+            double y = dodecVertices[vertexIndex][1];
+            double z = dodecVertices[vertexIndex][2];
+
+            // Set the vertex color or other properties as needed
+            glColor3f(1.0f, 0.0f, 0.0f); // Set the color to red as an example
+
+            glVertex3d(x, y, z);
+        }
+    }
+
+    glEnd();
+    glEnable(GL_LIGHTING);  // or gl2.glEnable(GL2.GL_LIGHTING) in Java
+}
+
 void draw() {
     
     glRotatef(rotateZ,0,0,1);   // Apply rotations to complete object.
@@ -164,9 +185,10 @@ void draw() {
     // TODO: Draw the currently selected object, number 1, 2, 3, 4, or 5.
     // (Objects should lie in the cube with x, y, and z coordinates in the
     // range -5 to 5.)
-    if(objectNumber == 1){
-        drawShape1();
-    }
+    
+
+    //drawShape1();
+    drawStellatedDodecahedron();
     
     //Example Triangle dont forget to comment out
     // glScalef(2.0,2.0,2.0);
