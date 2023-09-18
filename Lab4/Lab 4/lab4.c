@@ -156,9 +156,9 @@ void drawShape1(){
     glEnd();
 }
 void drawStellatedDodecahedron() {
-    glBegin(GL_TRIANGLES);
-    glDisable(GL_LIGHTING);  // or gl2.glDisable(GL2.GL_LIGHTING) in Java
+    glDisable(GL_LIGHTING);  // Turn off lighting since the positions are not transformed.
     for (int i = 0; i < sizeof(dodecTriangles) / sizeof(dodecTriangles[0]); i++) {
+        glBegin(GL_LINE_LOOP);
         for (int j = 0; j < 3; j++) {
             int vertexIndex = dodecTriangles[i][j];
             double x = dodecVertices[vertexIndex][0];
@@ -166,15 +166,98 @@ void drawStellatedDodecahedron() {
             double z = dodecVertices[vertexIndex][2];
 
             // Set the vertex color or other properties as needed
-            glColor3f(1.0f, 0.0f, 0.0f); // Set the color to red as an example
+            glColor3f(1.0f, 1.0f, 0.0f); // Set the color to red as an example
 
             glVertex3d(x, y, z);
         }
+        glEnd();
     }
 
-    glEnd();
+    
     glEnable(GL_LIGHTING);  // or gl2.glEnable(GL2.GL_LIGHTING) in Java
 }
+
+void drawShape3(){
+    glPushMatrix();
+    glColor3f(1.0f, 0.0f, 0.0f); // Red color
+    glRotatef(90.0f,1.0f, 0.0f, 0.0f);
+    //glRotatef(-45.0f,0.0f, 1.0f, 0.0f);
+    glRotatef(-90.0f,0.0f, 0.0f, 1.0f);
+    glutSolidCylinder( 3, 5, 32, 8 );
+    glPopMatrix();
+
+    glPushMatrix();
+    //gltranslate(0.0f, 0.0f, 5.0f);
+    glRotatef(-90.0f,1.0f, 0.0f, 0.0f);
+    glutSolidCone( 3, 5, 32, 8 );
+    glPopMatrix();
+}
+
+void drawBar(){
+    glPushMatrix();
+    glColor3f(0.0f, 1.0f, 0.0f); 
+    //glRotatef(90.0f,1.0f, 0.0f, 0.0f);
+    glTranslatef(-4.0f, 0.0f, 0.0f);
+    glRotatef(90.0f,0.0f, 1.0f, 0.0f);
+    
+    glutSolidCylinder( 0.5, 8, 32, 8 );
+    glPopMatrix();
+}
+void drawSphere(int x, int y, int z){
+    glPushMatrix();
+    glColor3f(1.0f, 0.0f, 1.0f);
+    glTranslated(x,y,z);
+    glutSolidSphere(1, 32, 32);
+    glPopMatrix();
+}
+
+void drawShape4(){
+    drawSphere(-4,0,0);
+    drawBar();
+    drawSphere(4,0,0);
+}
+
+void drawShape5(){
+    drawShape4();
+
+    glPushMatrix();
+    glTranslatef(4.0f,4.0f,0.0f);
+    glRotatef(90.0f,0.0f,0.0f,1.0f);
+    drawShape4();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-4.0f,4.0f,0.0f);
+    glRotatef(90.0f,0.0f,0.0f,1.0f);
+    drawShape4();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0f,8.0f,0.0f);
+    drawShape4();
+    glPopMatrix();
+}
+void drawShape6(){
+    drawShape5();
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,8.0f);
+    drawShape5();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0f,8.0f,0.0f);
+    glRotatef(90.0f,1.0f,0.0f,0.0f);
+    drawShape5();
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0f,0.0f,0.0f);
+    glRotatef(90.0f,1.0f,0.0f,0.0f);
+    drawShape5();
+    glPopMatrix();
+}
+
 
 void draw() {
     
@@ -186,22 +269,34 @@ void draw() {
     // (Objects should lie in the cube with x, y, and z coordinates in the
     // range -5 to 5.)
     
+    if(objectNumber == 1){
+        drawShape1();
+    }
+    else if(objectNumber == 2){
+        drawStellatedDodecahedron();
+    }
+    else if(objectNumber == 3){
+        drawShape3();
+    }
+    else if(objectNumber == 4){
+        drawShape4();
+    }
+    else if(objectNumber == 5){
+        drawShape5();
+    }
+    else if(objectNumber == 6){
+        drawShape6();
+    }
 
-    //drawShape1();
-    drawStellatedDodecahedron();
+   
     
-    //Example Triangle dont forget to comment out
-    // glScalef(2.0,2.0,2.0);
-    // glBegin(GL_TRIANGLES);
-    // glColor3f(1.0f, 0.0f, 0.0f);   // Red
-    // glVertex2f(0.0f, 1.0f);
+    
+   
+    
+    
+    
+    
 
-    // glColor3f(0.0f, 1.0f, 0.0f);   // Green
-    // glVertex2f(-1.0f, -1.0f);
-
-    // glColor3f(0.0f, 0.0f, 1.0f);   // Blue
-    // glVertex2f(1.0f, -1.0f);
-    // glEnd();
     
 }
 

@@ -18,7 +18,7 @@ OUT = lab4
 all: $(OUT)
 
 $(OUT): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) -o $(OUT) $(LIBS)
+	$(CC) -o $(OUT) $(SRC) $(LIBS)
 
 clean:
 	rm -f $(OUT)
