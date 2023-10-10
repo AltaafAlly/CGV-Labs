@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lab 5.1 Cube</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="webgl-canvas" width="500" height="500"></canvas>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.4.0/gl-matrix.js"></script>
+    <script type="text/javascript">
+
+        const vertexShaderSource = `
+            
+        `;
+
+        const fragmentShaderSource = `
+            
+        `;
+
+        const canvas = document.getElementById('webgl-canvas');
+        const gl = canvas.getContext('webgl');
+
+        if (!gl) {
+            console.error('WebGL not supported, falling back on experimental-webgl');
+            gl = canvas.getContext('experimental-webgl');
+        }
+
+        if (!gl) {
+            alert('Your browser does not support WebGL');
+        }
+
+        // Define the vertices for a cube
+        const vertices = new Float32Array([
+            -1, -1, -1,
+             1, -1, -1,
+            -1,  1, -1,
+             1,  1, -1,
+            -1, -1,  1,
+             1, -1,  1,
+            -1,  1,  1,
+             1,  1,  1,
+        ]);
+
+        // Define indices to form triangles
+        const indices = new Uint16Array([
+            0, 1, 2, 1, 2, 3, // Front face
+            4, 5, 6, 5, 6, 7, // Back face
+            0, 1, 4, 1, 4, 5, // Bottom face
+            2, 3, 6, 3, 6, 7, // Top face
+            0, 2, 4, 2, 4, 6, // Left face
+            1, 3, 5, 3, 5, 7  // Right face
+        ]);
+
+        const colors = new Float32Array([
+        // RGB color values for each vertex
+            1, 0, 0, // Red
+            0, 1, 0, // Green
+            0, 0, 1, // Blue
+            1, 1, 0, // Yellow
+            0, 1, 1, // Cyan
+            1, 0, 1, // Magenta
+            0.5, 0.5, 0.5, // Gray
+            1, 0.5, 0.5, // Light Red
+        ]);
+
+        // Enable depth testing
+        gl.enable(gl.DEPTH_TEST);
+
+        // Create buffer for vertices and indices
+
+        // Create buffer for colours
+
+
+        // Define transformation matrices
+ 
+
+        // Define shader program
+        const shaderProgram = createProgram(gl, vertexShaderSource, fragmentShaderSource);
+
+        // Get attribute and uniform locations
+
+
+        // Set up the WebGL context
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.useProgram(shaderProgram);
+
+        // Bind postion buffer
+        
+        // Bind color buffer
+
+
+        // Set up the perspective projection matrix
+        
+
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        // Draw the cube
+
+        
+
+        function createProgram(gl, vertexShaderSource, fragmentShaderSource) {
+            let  vsh = gl.createShader( gl.VERTEX_SHADER );
+            gl.shaderSource( vsh, vertexShaderSource );
+            gl.compileShader( vsh );
+            if ( ! gl.getShaderParameter(vsh, gl.COMPILE_STATUS) ) {
+                throw new Error("Error in vertex shader:  " + gl.getShaderInfoLog(vsh));
+            }
+            let  fsh = gl.createShader( gl.FRAGMENT_SHADER );
+            gl.shaderSource( fsh, fragmentShaderSource );
+            gl.compileShader( fsh );
+            if ( ! gl.getShaderParameter(fsh, gl.COMPILE_STATUS) ) {
+                throw new Error("Error in fragment shader:  " + gl.getShaderInfoLog(fsh));
+            }
+            let  prog = gl.createProgram();
+            gl.attachShader( prog, vsh );
+            gl.attachShader( prog, fsh );
+            gl.linkProgram( prog );
+            if ( ! gl.getProgramParameter( prog, gl.LINK_STATUS) ) {
+                throw new Error("Link error in program:  " + gl.getProgramInfoLog(prog));
+            }
+            return prog;
+        }
+
+        function compileShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
+    </script>
+</body>
+</html>
