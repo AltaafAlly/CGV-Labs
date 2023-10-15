@@ -22,12 +22,27 @@
     <script type="text/javascript">
 
         const vertexShaderSource = `
-            
-        `;
+    attribute vec3 a_coords;
+    attribute vec3 a_color;    // Add this line for color attribute
+    varying vec3 v_color;      // Declare the varying v_color
+    uniform mat4 modelviewProjection;
+    void main() {
+        vec4 coords = vec4(a_coords, 1.0);
+        gl_Position = modelviewProjection * coords;
+        v_color = a_color;    // Set the varying color from the attribute
+    }
+`;
+
+
 
         const fragmentShaderSource = `
-            
-        `;
+    precision mediump float;
+    varying vec3 v_color;
+    void main() {
+        gl_FragColor = vec4(v_color, 1.0);
+    }
+`;
+
 
         const canvas = document.getElementById('webgl-canvas');
         const gl = canvas.getContext('webgl');
@@ -78,72 +93,86 @@
         // Enable depth testing
         gl.enable(gl.DEPTH_TEST);
 
-        // Create buffer for vertices and indices
+        // Create buffer for vertices
         const vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
+        // Create buffer for indices
         const indexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 
-
-        // Create buffer for colours
+        // Create buffer for colors
         const colorBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
 
-        // Define transformation matrices
-        const modelMatrix = mat4.create(); // Model matrix (for object transformation)
-        const projectionMatrix = mat4.create(); // Projection matrix (for perspective projection)
-
-        // Set up transformation matrices (replace these values with actual transformation data)
-        const translateX = 0.0;
-        const translateY = 0.0;
-        const translateZ = -5.0;
-        mat4.translate(modelMatrix, modelMatrix, [translateX, translateY, translateZ]); // Translation
-
-        const angleInRadians = 0.0;
-        const axisX = 0.0;
-        const axisY = 1.0;
-        const axisZ = 0.0;
-        mat4.rotate(modelMatrix, modelMatrix, angleInRadians, [axisX, axisY, axisZ]); // Rotation
-
-        const scaleX = 1.0;
-        const scaleY = 1.0;
-        const scaleZ = 1.0;
-        mat4.scale(modelMatrix, modelMatrix, [scaleX, scaleY, scaleZ]); // Scaling
-
-        const fieldOfViewRadians = Math.PI / 4; // 45 degrees
-        const aspectRatio = canvas.width / canvas.height;
-        const nearPlane = 0.1;
-        const farPlane = 100.0;
-        mat4.perspective(projectionMatrix, fieldOfViewRadians, aspectRatio, nearPlane, farPlane);
-
-        // Define shader program (createProgram function should be defined)
+        // Define shader program
         const shaderProgram = createProgram(gl, vertexShaderSource, fragmentShaderSource);
-
-        // Get attribute and uniform locations
-        const positionAttributeLocation = gl.getAttribLocation(shaderProgram, 'a_position');
-        const colorAttributeLocation = gl.getAttribLocation(shaderProgram, 'a_color');
-        const modelMatrixUniformLocation = gl.getUniformLocation(shaderProgram, 'u_modelMatrix');
-        const projectionMatrixUniformLocation = gl.getUniformLocation(shaderProgram, 'u_projectionMatrix');
-
-        // Set up the WebGL context
-        gl.viewport(0, 0, canvas.width, canvas.height);
-        gl.clearColor(0, 0, 0, 1);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.useProgram(shaderProgram);
+        // Get attribute and uniform locations
+        const coord = gl.getAttribLocation(shaderProgram, "a_coords");
+        const modelviewProjectionLocation = gl.getUniformLocation(shaderProgram, "modelviewProjection");
+        const vColor = gl.getAttribLocation(shaderProgram, "v_color");
 
-        // Bind position buffer and set attributes
+        // Bind position buffer
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(coord);
 
-        // Bind color buffer and set attributes
+        const colorAttribLocation = gl.getAttribLocation(shaderProgram, "a_color");
 
-        // Set uniform values for matrices (model and projection)
+        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+        gl.vertexAttribPointer(colorAttribLocation, 3, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(colorAttribLocation);
 
-        // Draw the cube using gl.drawElements
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-        gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+
+        // Set up the perspective projection matrix
+        const projectionMatrix = mat4.create();
+        const modelViewMatrix = mat4.create();
+        mat4.perspective(projectionMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
+        mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -5]);
+        const finalMatrix = mat4.create();
+        mat4.multiply(finalMatrix, projectionMatrix, modelViewMatrix);
+        gl.uniformMatrix4fv(modelviewProjectionLocation, false, finalMatrix);
+
+        // Draw the cube
+        let rotationAngleX = 0;
+        let rotationAngleY = 0;
+        function animate() {
+            // Clear the canvas
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            // Calculate rotation matrices
+            const rotationMatrixX = mat4.create();
+            const rotationMatrixY = mat4.create();
+            mat4.rotateX(rotationMatrixX, rotationMatrixX, rotationAngleX);
+            mat4.rotateY(rotationMatrixY, rotationMatrixY, rotationAngleY);
+
+            // Combine rotation matrices
+            mat4.multiply(modelViewMatrix, modelViewMatrix, rotationMatrixX);
+            mat4.multiply(modelViewMatrix, modelViewMatrix, rotationMatrixY);
+
+            // Calculate final MVP matrix
+            const finalMatrix = mat4.create();
+            mat4.multiply(finalMatrix, projectionMatrix, modelViewMatrix);
+            gl.uniformMatrix4fv(modelviewProjectionLocation, false, finalMatrix);
+
+            // Draw the cube
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+            gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+
+            // Update rotation angles for next frame
+            rotationAngleX = 0.01;
+            rotationAngleY = 0.01;
+
+            // Request the next frame
+            requestAnimationFrame(animate);
+        }
+        // Start the animation
+        animate();
+
 
 
 
