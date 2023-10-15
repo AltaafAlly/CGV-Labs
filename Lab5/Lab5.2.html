@@ -38,6 +38,12 @@ const vertexShaderSource = `
     varying vec4 v_color;
     void main() {
         // Implement Lambert Shading
+        vec3 N = normalize(normalMatrix * a_normal);
+    vec3 L = normalize(lightPosition.xyz - gl_Position.xyz);
+    float lambert = max(dot(N, L), 0.0);
+    v_color = vec4(diffuseColor.rgb * lambert, diffuseColor.a);
+
+
     }`;
 
 const fragmentShaderSource = `
@@ -54,6 +60,11 @@ const fragmentShaderSource = `
     void main() {
 
         // Quantize the light intensity based on the cell size
+        float intensity = v_color.r; // assuming grayscale intensity
+    intensity = floor(intensity * cellSize) / cellSize;
+    gl_FragColor = vec4(vec3(intensity), v_color.a);
+
+
  
     }`;
 
@@ -100,7 +111,6 @@ const objects = [  // Objects for display, selected by popup menu
 ];
 
 let currentModelNumber;  // contains data for the current object
-
 
 function draw() { 
     gl.clearColor(0.15,0.15,0.3,1);
