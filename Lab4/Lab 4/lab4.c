@@ -132,28 +132,35 @@ int rotateZ = 0;    //    Home key sets all rotations to 0.)
  */
 
 void drawShape1(){
-    glScalef(1.0,1.0,1.0);
-    glBegin(GL_QUAD_STRIP);
+    // glScalef(1.0,1.0,1.0);
+    // glBegin(GL_QUAD_STRIP);
 
-    glColor3f(1.0f, 1.0f, 0.0f);   
-    glVertex2f(-5.0f, 5.0f);
+    // glColor3f(1.0f, 1.0f, 0.0f);   
+    // glVertex2f(-5.0f, 5.0f);
 
-    glColor3f(1.0f, 0.0f, 0.0f);   
-    glVertex2f(5.0f, 5.0f);
+    // glColor3f(1.0f, 0.0f, 0.0f);   
+    // glVertex2f(5.0f, 5.0f);
 
-    glColor3f(0.0f, 1.0f, 1.0f);   
-    glVertex2f(-3.0f, 0.0f);
+    // glColor3f(0.0f, 1.0f, 1.0f);   
+    // glVertex2f(-3.0f, 0.0f);
 
-    glColor3f(0.0f, 1.0f, 0.0f);   
-    glVertex2f(3.0f, 0.0f);
+    // glColor3f(0.0f, 1.0f, 0.0f);   
+    // glVertex2f(3.0f, 0.0f);
     
-    glColor3f(1.0f, 0.0f, 1.0f);   
-    glVertex2f(-5.0f, -5.0f);
+    // glColor3f(1.0f, 0.0f, 1.0f);   
+    // glVertex2f(-5.0f, -5.0f);
 
-    glColor3f(0.0f, 0.0f, 1.0f);   
-    glVertex2f(5.0f, -5.0f);
+    // glColor3f(0.0f, 0.0f, 1.0f);   
+    // glVertex2f(5.0f, -5.0f);
 
-    glEnd();
+    // glEnd();glBegin(GL TRIANGLES);
+    glScalef(2.0f,2.0f,2.0f);
+    glBegin(GL_TRIANGLE_FAN);
+
+glVertex2f( -0.7, -0.5 );
+glVertex2f( 0.7, -0.5 );
+glVertex2f( 0, 0.7 );
+glEnd();
 }
 void drawStellatedDodecahedron() {
     glDisable(GL_LIGHTING);  // Turn off lighting since the positions are not transformed.
@@ -183,7 +190,7 @@ void drawShape3(){
     glRotatef(90.0f,1.0f, 0.0f, 0.0f);
     //glRotatef(-45.0f,0.0f, 1.0f, 0.0f);
     glRotatef(-90.0f,0.0f, 0.0f, 1.0f);
-    glutSolidCylinder( 3, 5, 32, 8 );
+    glutSolidCylinder( 3, 5, 32, 8);
     glPopMatrix();
 
     glPushMatrix();

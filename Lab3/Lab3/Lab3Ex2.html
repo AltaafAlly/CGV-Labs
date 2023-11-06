@@ -36,7 +36,7 @@
         
         //draws outer circle
         var wheelTemp = new CompoundObject();
-        wheelTemp.add(filledCircle);
+        wheelTemp.add(filledCircle).setColor("black");
         wheelTemp.add(new TransformedObject(filledCircle).setColor("white").setScale(0.9,0.9));
         wheelTemp.add(new TransformedObject(filledCircle).setColor("black").setScale(0.1,0.1));
         //draws spokes for wheel
@@ -47,29 +47,40 @@
 
         //draws the filled rectangle
         var Temprectangle = new CompoundObject();
-        Temprectangle.add(new TransformedObject(wheel).setTranslation(1,0));
-        Temprectangle.add(new TransformedObject(wheel).setTranslation(-1,0));
-        Temprectangle.add(new TransformedObject(filledRect).setTranslation(0,0).setScale(2,0.2).setColor("red"));
+        Temprectangle.add(new TransformedObject(wheel).setTranslation(1,0));//attach wheel to rectangle, right side
+        Temprectangle.add(new TransformedObject(wheel).setTranslation(-1,0));//attach wheel to rectangle, left side
+        Temprectangle.add(new TransformedObject(filledRect).setTranslation(0,0).setScale(2,0.2).setColor("red"));//adds the rectangle
         rectangle = new TransformedObject(Temprectangle);
         
-        
+        //temp diagram
+        tempDiagram = new CompoundObject();
+        tempDiagram.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
+        tempDiagram.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5));
+
+        //diagram 1
+        diagram1 = new TransformedObject(tempDiagram).setTranslation(0,-1).setColor("purple");
+        //diagram 2
+        diagram2 = new TransformedObject(tempDiagram).setTranslation(-3,1).setColor("yellow");
+        //diagram 3
+        diagram3 = new TransformedObject(tempDiagram).setTranslation(2,2).setColor("blue").setScale(0.5,0.5);
+
         //draws the diagram 1
-        diagram1 = new CompoundObject();        
-        diagram1.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
-        diagram1.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5).setColor("purple"));
-        world.add(new TransformedObject(diagram1).setTranslation(0,-1));
+        // diagram1 = new CompoundObject();        
+        // diagram1.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
+        // diagram1.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5).setColor("purple"));
+        world.add(new TransformedObject(diagram1));
         
         //draw the diagram 2
-        diagram2 = new CompoundObject();
-        diagram2.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
-        diagram2.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5).setColor("yellow"));
-        world.add(new TransformedObject(diagram2).setTranslation(-2,2));
+        // diagram2 = new CompoundObject();
+        // diagram2.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
+        // diagram2.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5).setColor("yellow"));
+        world.add(new TransformedObject(diagram2));
 
         //draw the diagram 3
-        diagram3 = new CompoundObject();
-        diagram3.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
-        diagram3.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5).setColor("blue"));
-        world.add(new TransformedObject(diagram3).setTranslation(2,2));
+        // diagram3 = new CompoundObject();
+        // diagram3.add(new TransformedObject(rectangle).setScale(1,1).setTranslation(0,0));
+        // diagram3.add(new TransformedObject(filledTriangle).setScale(1,1.5).setTranslation(0,-1.5).setColor("blue"));
+        world.add(new TransformedObject(diagram3));
     }
     
     /**
